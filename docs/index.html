@@ -1,309 +1,454 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <title>netmap-rs Documentation | High-Performance Kernel-Bypass Networking in Rust</title>
-    <meta name="description" content="netmap-rs provides safe, zero-cost abstractions for Netmap kernel-bypass networking in Rust. Achieve high-performance packet processing with direct memory access.">
-    <meta name="keywords" content="netmap, rust, networking, kernel-bypass, high-performance, packet-processing, zero-cost-abstractions">
-    <meta name="author" content="Meshack Bahati Ouma">
-    
-    <!-- OpenGraph Meta Tags -->
-    <meta property="og:title" content="netmap-rs Documentation | High-Performance Kernel-Bypass Networking">
-    <meta property="og:description" content="Safe, zero-cost abstractions for Netmap kernel-bypass networking in Rust. Achieve maximum packet processing performance.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://github.com/Kyle6012/netmap-rs">
-    <meta property="og:image" content="https://raw.githubusercontent.com/Kyle6012/netmap-rs/main/docs/netmap-rs-og.png">
-    <meta property="og:site_name" content="netmap-rs Documentation">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="netmap-rs Documentation | High-Performance Networking">
-    <meta name="twitter:description" content="Safe, zero-cost abstractions for Netmap kernel-bypass networking in Rust.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/Kyle6012/netmap-rs/main/docs/netmap-rs-og.png">
-    <meta name="twitter:creator" content="@bealthguy">
-    
-    <!-- Favicon and Icons -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📡</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📡</text></svg>">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://github.com/Kyle6012/netmap-rs">
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareSourceCode",
-      "name": "netmap-rs",
-      "description": "Safe, zero-cost abstractions for Netmap kernel-bypass networking in Rust",
-      "url": "https://github.com/Kyle6012/netmap-rs",
-      "codeRepository": "https://github.com/Kyle6012/netmap-rs",
-      "programmingLanguage": "Rust",
-      "runtimePlatform": "Linux",
-      "author": {
-        "@type": "Person",
-        "name": "Meshack Bahati"
-      },
-      "license": "https://opensource.org/licenses/MIT"
-    }
-    </script>
-    
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --warning-color: #ffc107;
-            --info-color: #17a2b8;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --border-color: #e9ecef;
-            --shadow-color: rgba(0,0,0,0.08);
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            background-color: var(--light-color);
-            color: var(--dark-color);
-            scroll-behavior: smooth;
-        }
-        .container {
-            max-width: 960px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px var(--shadow-color);
-        }
-        h1, h2, h3 {
-            color: #212529;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            scroll-margin-top: 20px;
-        }
-        a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-        code {
-            background-color: var(--border-color);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-            font-size: 0.9em;
-        }
-        pre {
-            background-color: #212529;
-            color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            position: relative;
-        }
-        pre code {
-            background-color: transparent;
-            padding: 0;
-            color: inherit;
-            font-size: 0.9em;
-        }
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8em;
-            transition: background 0.2s ease;
-        }
-        .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .header h1 {
-            font-size: 2.5em;
-            border-bottom: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .header-icon {
-            font-size: 1.2em;
-        }
-        .links {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .links a {
-            margin: 0 15px;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 4px;
-            background-color: var(--primary-color);
-            color: white;
-            display: inline-block;
-        }
-        .links a:hover {
-            background-color: #0056b3;
-            text-decoration: none;
-        }
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        .feature-card {
-            background-color: var(--light-color);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px var(--shadow-color);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px var(--shadow-color);
-        }
-        .feature-card h3 {
-            border-bottom: none;
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-        .toc {
-            background-color: var(--light-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        .toc h3 {
-            margin-top: 0;
-            border-bottom: none;
-        }
-        .toc ul {
-            padding-left: 20px;
-        }
-        .toc li {
-            margin-bottom: 8px;
-        }
-        .breadcrumb {
-            margin-bottom: 20px;
-            font-size: 0.9em;
-            color: var(--secondary-color);
-        }
-        .breadcrumb a {
-            color: var(--secondary-color);
-        }
-        .breadcrumb a:hover {
-            color: var(--primary-color);
-        }
-        @media (max-width: 768px) {
-            .container {
-                margin: 20px;
-                padding: 15px;
-            }
-            .header h1 {
-                font-size: 2em;
-            }
-            .links a {
-                display: block;
-                margin: 10px 0;
-            }
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>netmap-rs 0.3.1 — A Book on Kernel-Bypass Networking in Rust</title>
+<meta name="description" content="An interactive book covering netmap-rs 0.3.1: safe, zero-cost abstractions for Netmap kernel-bypass networking in Rust. Installation, core concepts, API reference, examples, apps, async support, and troubleshooting.">
+<meta name="author" content="Meshack Bahati Ouma">
+<link rel="canonical" href="https://github.com/meshackbahati/netmap-rs">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📡</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "netmap-rs 0.3.1 — A Book on Kernel-Bypass Networking in Rust",
+  "description": "Safe, zero-cost abstractions for Netmap kernel-bypass networking in Rust",
+  "url": "https://github.com/meshackbahati/netmap-rs",
+  "author": { "@type": "Person", "name": "Meshack Bahati Ouma" },
+  "programmingLanguage": "Rust",
+  "license": "https://opensource.org/licenses/MIT"
+}
+</script>
+<style>
+  :root {
+    --accent: #0f5f5c;
+    --accent-ink: #0b4543;
+    --ink: #1e1e1e;
+    --muted: #5c5c5c;
+    --paper: #fffdf8;
+    --panel: #f6f3ec;
+    --line: #ddd5c4;
+    --code-bg: #232323;
+    --code-ink: #f2ede1;
+    --marker: #e8f0ee;
+  }
+  html[data-theme="dark"] {
+    --accent: #7fc4bd;
+    --accent-ink: #bfe3df;
+    --ink: #e8e4d8;
+    --muted: #a8a49a;
+    --paper: #1b1b19;
+    --panel: #262624;
+    --line: #3d3d38;
+    --code-bg: #101010;
+    --code-ink: #e8e4d8;
+    --marker: #2a3433;
+  }
+  html[data-theme="sepia"] {
+    --accent: #7a4a12;
+    --accent-ink: #5e3709;
+    --ink: #3d2f1d;
+    --muted: #6d5f45;
+    --paper: #f4ecd8;
+    --panel: #ece1c8;
+    --line: #d3c5a3;
+    --code-bg: #2b2417;
+    --code-ink: #f4ecd8;
+    --marker: #e9dcc0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.7;
+  }
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: var(--accent); z-index: 60;
+  }
+  header.topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 0.6rem 1rem;
+    display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
+  }
+  header.topbar .brand { font-weight: bold; font-size: 1.05rem; }
+  header.topbar .brand small { color: var(--muted); font-weight: normal; }
+  header.topbar input[type="search"] {
+    margin-left: auto; padding: 0.35rem 0.6rem; font-size: 0.9rem;
+    border: 1px solid var(--line); border-radius: 4px;
+    background: var(--panel); color: var(--ink); min-width: 11rem;
+  }
+  header.topbar select, header.topbar button {
+    font-size: 0.85rem; padding: 0.35rem 0.6rem;
+    border: 1px solid var(--line); border-radius: 4px;
+    background: var(--panel); color: var(--ink); cursor: pointer;
+  }
+  .layout { display: flex; max-width: 72rem; margin: 0 auto; }
+  nav.sidebar {
+    width: 17rem; flex-shrink: 0;
+    border-right: 1px solid var(--line);
+    padding: 1rem 0.75rem;
+    position: sticky; top: 3.4rem; align-self: flex-start;
+    max-height: calc(100vh - 3.4rem); overflow-y: auto;
+    font-size: 0.92rem;
+  }
+  nav.sidebar h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 0.5rem 0.25rem; }
+  nav.sidebar ol { list-style: none; margin: 0; padding: 0; }
+  nav.sidebar li a {
+    display: flex; gap: 0.5rem; text-decoration: none; color: var(--ink);
+    padding: 0.3rem 0.4rem; border-radius: 4px; line-height: 1.4;
+  }
+  nav.sidebar li a:hover { background: var(--marker); }
+  nav.sidebar li a.active { background: var(--marker); border-left: 3px solid var(--accent); font-weight: bold; }
+  nav.sidebar li a .tick { color: var(--accent); visibility: hidden; }
+  nav.sidebar li a.read .tick { visibility: visible; }
+  nav.sidebar li.hidden { display: none; }
+  main { flex: 1; min-width: 0; padding: 1.5rem 2rem 4rem 2rem; }
+  .chapter { display: none; }
+  .chapter.active { display: block; }
+  .chapter h1 { font-size: 1.9rem; margin-top: 0; }
+  .chapter h2 { font-size: 1.35rem; margin-top: 2rem; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; }
+  .chapter h3 { font-size: 1.1rem; margin-top: 1.5rem; }
+  .kicker { color: var(--muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0; }
+  a { color: var(--accent-ink); }
+  html[data-theme="dark"] a { color: var(--accent); }
+  code {
+    font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+    font-size: 0.87em; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 3px; padding: 0 0.3em;
+  }
+  pre {
+    background: var(--code-bg); color: var(--code-ink);
+    padding: 1rem; border-radius: 6px; overflow-x: auto; position: relative;
+    font-size: 0.85rem; line-height: 1.55;
+  }
+  pre code { background: transparent; border: none; padding: 0; color: inherit; }
+  .copy-btn {
+    position: absolute; top: 0.5rem; right: 0.5rem;
+    background: transparent; border: 1px solid #777; color: var(--code-ink);
+    border-radius: 4px; font-size: 0.75rem; padding: 0.15rem 0.5rem; cursor: pointer;
+  }
+  .copy-btn:hover { background: rgba(128,128,128,0.3); }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.92rem; }
+  th, td { border: 1px solid var(--line); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+  th { background: var(--panel); }
+  .note {
+    border-left: 3px solid var(--accent); background: var(--panel);
+    padding: 0.7rem 1rem; margin: 1rem 0; font-size: 0.95rem;
+  }
+  .tabs { margin: 1rem 0; }
+  .tab-bar { display: flex; gap: 0.25rem; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .tab-bar button {
+    font-family: inherit; font-size: 0.9rem; padding: 0.4rem 0.9rem;
+    background: transparent; border: 1px solid transparent; border-bottom: none;
+    color: var(--muted); cursor: pointer;
+  }
+  .tab-bar button.active { color: var(--ink); font-weight: bold; border-color: var(--line); background: var(--panel); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+  .lab {
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 1rem; margin: 1rem 0; background: var(--panel);
+  }
+  .lab h4 { margin-top: 0; }
+  .lab button, .lab select, .lab input[type="text"] {
+    font-size: 0.9rem; padding: 0.35rem 0.7rem; margin: 0.2rem 0.2rem 0.2rem 0;
+    border: 1px solid var(--line); border-radius: 4px;
+    background: var(--paper); color: var(--ink); cursor: pointer;
+  }
+  .lab button { background: var(--accent); border-color: var(--accent); color: #fff; }
+  html[data-theme="dark"] .lab button { color: #101010; }
+  .lab button.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .lab output { display: block; margin-top: 0.6rem; font-size: 0.9rem; }
+  .ring-slots { display: flex; gap: 0.3rem; margin: 0.6rem 0; flex-wrap: wrap; }
+  .slot {
+    width: 3.2rem; height: 3.2rem; border: 1px solid var(--line); border-radius: 4px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 0.7rem; background: var(--paper); font-family: monospace;
+  }
+  .slot.full { background: var(--marker); border-color: var(--accent); }
+  .slot .ptr { font-size: 0.62rem; color: var(--accent-ink); font-weight: bold; }
+  html[data-theme="dark"] .slot .ptr { color: var(--accent); }
+  .pager { display: flex; justify-content: space-between; margin-top: 3rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+  .pager a, .pager button {
+    text-decoration: none; border: 1px solid var(--line); border-radius: 4px;
+    padding: 0.5rem 1rem; background: var(--panel); color: var(--ink); cursor: pointer; font-size: 0.9rem;
+    font-family: inherit;
+  }
+  .pager a:hover, .pager button:hover { border-color: var(--accent); }
+  footer.colophon { max-width: 72rem; margin: 0 auto; padding: 1rem 2rem 3rem 2rem; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); }
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { margin: 0.3rem 0; }
+  .checklist input { margin-right: 0.5rem; }
+  @media (max-width: 56rem) {
+    .layout { flex-direction: column; }
+    nav.sidebar { width: 100%; position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--line); }
+    main { padding: 1rem 1rem 3rem 1rem; }
+  }
+  @media print {
+    nav.sidebar, header.topbar .controls, .pager, #progress, .copy-btn { display: none; }
+    .chapter { display: block; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="breadcrumb">
-            <a href="https://crates.io">crates.io</a> &gt; <a href="https://crates.io/categories/network-programming">Networking</a> &gt; netmap-rs
-        </div>
-        
-        <div class="header">
-            <h1><span class="header-icon">📡</span> netmap-rs</h1>
-            <p>Safe, zero-cost abstractions for Netmap kernel-bypass networking in Rust.</p>
-        </div>
+<div id="progress" role="presentation"></div>
 
-        <div class="toc">
-            <h3>Table of Contents</h3>
-            <ul>
-                <li><a href="#introduction">Introduction</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#getting-started">Getting Started</a></li>
-                <li><a href="#basic-usage">Basic Usage</a></li>
-                <li><a href="#public-api">Public API</a></li>
-                <li><a href="#advanced-usage">Advanced Usage</a></li>
-                <li><a href="#troubleshooting">Troubleshooting</a></li>
-            </ul>
-        </div>
+<header class="topbar">
+  <span class="brand">📡 netmap-rs <small>an interactive book · v0.3.1</small></span>
+  <span class="controls" style="display:flex; gap:0.5rem; align-items:center; margin-left:auto;">
+    <input type="search" id="search" placeholder="Filter chapters…" aria-label="Filter chapters">
+    <select id="theme" aria-label="Reading theme">
+      <option value="light">Light</option>
+      <option value="sepia">Sepia</option>
+      <option value="dark">Dark</option>
+    </select>
+  </span>
+</header>
 
-        <div class="links">
-            <a href="https://github.com/Kyle6012/netmap-rs">GitHub Repository</a>
-            <a href="https://crates.io/crates/netmap-rs">crates.io</a>
-            <a href="https://docs.rs/netmap-rs">API Documentation</a>
-            <a href="https://github.com/Kyle6012/netmap-rs/tree/main/examples">Examples</a>
-        </div>
+<div class="layout">
+<nav class="sidebar" aria-label="Table of contents">
+  <h2>Contents</h2>
+  <ol id="toc"></ol>
+</nav>
 
-        <h2 id="introduction">Introduction</h2>
-        <p><code>netmap-rs</code> provides safe, zero-cost abstractions for <a href="http://info.iet.unipi.it/~luigi/netmap/">Netmap</a>, a high-performance packet I/O framework. It allows you to directly access packet buffers in memory shared with the kernel, eliminating copies and system call overhead for extremely fast networking.</p>
+<main id="book">
 
-        <h2 id="features">Features</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h3>High Performance</h3>
-                <p>Direct memory access to packet buffers with zero-copy operations for maximum throughput.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Memory Safe</h3>
-                <p>Leverages Rust's ownership model to ensure memory safety without performance penalties.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Async Support</h3>
-                <p>Optional integration with Tokio for asynchronous packet processing.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Cross-Platform</h3>
-                <p>Works on Linux, FreeBSD, and other platforms supported by Netmap.</p>
-            </div>
-        </div>
+<!-- 0 -->
+<section class="chapter" id="ch-cover" data-title="Cover — How to Read This Book">
+  <p class="kicker">netmap-rs · version 0.3.1</p>
+  <h1>Kernel-Bypass Networking in Rust</h1>
+  <p><code>netmap-rs</code> provides safe, zero-cost abstractions for
+  <a href="http://info.iet.unipi.it/~luigi/netmap/">Netmap</a> kernel-bypass networking in Rust.
+  Netmap exposes packet buffers as memory-mapped ring buffers shared with the kernel,
+  which removes per-packet copies and system-call overhead and which makes
+  high-throughput, low-latency packet processing attainable from ordinary user space.</p>
+  <p>This book describes the crate as it stands at version 0.3.1, which migrated to the
+  Netmap 14 API through <code>netmap-min-sys</code> 0.3.1. It is organised as a sequence of
+  short chapters that may be read in order or consulted by topic, since each chapter states
+  its prerequisites at the outset.</p>
+  <div class="note"><strong>How to use this book.</strong> Use the contents list to move between
+  chapters as if turning pages; the previous and next buttons at the foot of each chapter preserve
+  the reading order. Interactive exercises, which are marked with the heading “Exercise”, run
+  entirely in the browser and require neither a Netmap installation nor compilation of the crate.</div>
+  <h2>Reading paths</h2>
+  <ul>
+    <li><strong>Evaluation in an afternoon:</strong> Chapters 1–3, then Chapter 11 (the virtual lab).</li>
+    <li><strong>Writing a packet forwarder:</strong> Chapters 3–7, then Chapter 10.</li>
+    <li><strong>Async integration:</strong> Chapters 3–5, then Chapter 8.</li>
+    <li><strong>Reference use:</strong> Chapters 4, 6, 7, and 12 stand alone.</li>
+  </ul>
+  <h2>Conventions</h2>
+  <ul>
+    <li>Shell commands are prefixed with <code>$</code> and assume the crate root as working directory.</li>
+    <li>Code samples that require the <code>sys</code> feature state so explicitly.</li>
+    <li>“Pipe” and “VALE port” always denote virtual, in-memory ports that never touch a physical NIC.</li>
+  </ul>
+</section>
 
-        <h2 id="getting-started">Getting Started</h2>
-        <h3>Prerequisites</h3>
-        <p>You must have the Netmap C library installed. Follow the instructions in the <a href="https://github.com/luigirizzo/netmap">official Netmap repository</a> to build and install it on your system.</p>
+<!-- 1 -->
+<section class="chapter" id="ch-orientation" data-title="1 · Orientation and Repository Map">
+  <p class="kicker">Chapter 1</p>
+  <h1>Orientation and Repository Map</h1>
+  <p>This chapter situates the crate within its repository so that later chapters can refer to
+  files by name without ambiguity. The figures below reflect version 0.3.1, which contains
+  roughly 6,300 lines across sources, examples, applications, tests, and documentation.</p>
+  <h2>What the crate is</h2>
+  <p><code>netmap-rs</code> is a safe Rust wrapper over the Netmap C framework. The unsafe
+  foreign-function interface is confined to the <code>netmap-min-sys</code> dependency and to
+  small, audited <code>unsafe</code> blocks inside <code>src/netmap.rs</code>,
+  <code>src/ring.rs</code>, and <code>src/tokio_async.rs</code>. Everything else, including
+  error handling, packet views, and the fallback channel, is safe Rust which the compiler checks.</p>
+  <h2>Repository map</h2>
+  <table>
+    <tr><th>Path</th><th>Contents</th><th>Relevance</th></tr>
+    <tr><td><code>src/lib.rs</code></td><td>Crate root, feature gates, prelude</td><td>Start here for the public surface</td></tr>
+    <tr><td><code>src/error.rs</code></td><td><code>Error</code> enum (8 variants)</td><td>Every fallible API returns this type</td></tr>
+    <tr><td><code>src/frame.rs</code></td><td><code>Frame</code>, a packet view over <code>Cow&lt;[u8]&gt;</code></td><td>Borrowed on Netmap rings, owned in fallback</td></tr>
+    <tr><td><code>src/netmap.rs</code></td><td><code>NetmapBuilder</code>, <code>Netmap</code></td><td>Opening interfaces, pipes, VALE ports, host rings</td></tr>
+    <tr><td><code>src/ring.rs</code></td><td><code>Ring</code>, <code>TxRing</code>, <code>RxRing</code>, <code>BatchReservation</code></td><td>All packet movement</td></tr>
+    <tr><td><code>src/fallback.rs</code></td><td>In-memory channel pair</td><td>Builds and tests without Netmap installed</td></tr>
+    <tr><td><code>src/tokio_async.rs</code></td><td><code>TokioNetmap</code> and async ring wrappers</td><td>Requires <code>tokio-async</code></td></tr>
+    <tr><td><code>examples/</code></td><td>12 small demos</td><td>Catalogued in Chapter 6</td></tr>
+    <tr><td><code>apps/</code></td><td>5 ready-to-run utilities</td><td>Catalogued in Chapter 7</td></tr>
+    <tr><td><code>tests/</code></td><td>Integration, mock, and unit suites</td><td>Chapter 11</td></tr>
+    <tr><td><code>benches/</code></td><td>Latency and throughput Criterion benches</td><td>Chapter 10</td></tr>
+    <tr><td><code>build.rs</code>, <code>scripts/install_netmap.sh</code></td><td>Netmap detection and installer</td><td>Chapter 2</td></tr>
+  </table>
+  <h2>Feature flags</h2>
+  <table>
+    <tr><th>Feature</th><th>Pulls in</th><th>Unlocks</th></tr>
+    <tr><td><code>sys</code> (recommended)</td><td><code>netmap-min-sys</code>, <code>core_affinity</code>, <code>reed-solomon-erasure</code></td><td><code>NetmapBuilder</code>, <code>Netmap</code>, rings, all examples and apps</td></tr>
+    <tr><td><code>tokio-async</code></td><td><code>tokio</code>, <code>netmap-min-sys</code></td><td><code>TokioNetmap</code>, <code>AsyncNetmapRxRing</code>, <code>AsyncNetmapTxRing</code></td></tr>
+    <tr><td><code>fallback</code></td><td><code>core_affinity</code></td><td>Thread-per-ring example without Netmap hardware</td></tr>
+    <tr><td>no features</td><td>—</td><td><code>Error</code>, <code>Frame</code>, fallback channel only</td></tr>
+  </table>
+  <div class="note"><strong>Audit note.</strong> The previous edition of this page linked to a stale
+  repository location. The canonical remote is
+  <a href="https://github.com/meshackbahati/netmap-rs">meshackbahati/netmap-rs</a>, and all links
+  in this book use it.</div>
+</section>
 
-        <h3>Adding to Your Project</h3>
-        <p>Add <code>netmap-rs</code> to your <code>Cargo.toml</code>, enabling the <code>sys</code> feature for core functionality:</p>
-        <pre><code id="code-cargo-toml">[dependencies]
-netmap-rs = { version = "0.3", features = ["sys"] }</code><button class="copy-btn" onclick="copyToClipboard('code-cargo-toml')">Copy</button></pre>
+<!-- 2 -->
+<section class="chapter" id="ch-install" data-title="2 · Installation and Configuration">
+  <p class="kicker">Chapter 2 · Prerequisites: Chapter 1</p>
+  <h1>Installation and Configuration</h1>
+  <p>Most users need two things: the Netmap C library on the build machine, and the
+  <code>sys</code> feature enabled in <code>Cargo.toml</code>. This chapter treats each in turn,
+  then provides an exercise that generates the correct dependency snippet.</p>
+  <h2>Installing the Netmap C library</h2>
+  <p>On FreeBSD 11 and later, Netmap ships with the base system and no installation is required.
+  On Linux, build and install the module from the upstream repository, then load it:</p>
+  <pre><code id="code-install">$ sudo apt-get install build-essential git linux-headers-$(uname -r)
+$ git clone https://github.com/luigirizzo/netmap.git
+$ cd netmap/LINUX &amp;&amp; ./configure &amp;&amp; make &amp;&amp; sudo make install
+$ sudo insmod netmap.ko
+$ ls /dev/netmap   # confirms the device node exists</code><button class="copy-btn" data-copy="code-install">Copy</button></pre>
+  <p>A convenience script is also provided at <code>scripts/install_netmap.sh</code>.
+  If Netmap lives in a non-standard prefix, export <code>NETMAP_LOCATION</code> before building,
+  since <code>build.rs</code> searches <code>$NETMAP_LOCATION/include/net/netmap_user.h</code>
+  and links <code>libnetmap</code> from <code>$NETMAP_LOCATION/lib</code>:</p>
+  <pre><code id="code-netmap-loc">$ export NETMAP_LOCATION=/opt/netmap
+$ cargo build --features sys</code><button class="copy-btn" data-copy="code-netmap-loc">Copy</button></pre>
+  <h2>Adding the crate</h2>
+  <p>For ordinary synchronous use, enable <code>sys</code>. For Tokio integration, add
+  <code>tokio-async</code> as well:</p>
+  <pre><code id="code-dep">$ cargo add netmap-rs --features sys
+# with async support:
+$ cargo add netmap-rs --features sys,tokio-async</code><button class="copy-btn" data-copy="code-dep">Copy</button></pre>
+  <div class="lab">
+    <h4>Exercise — Generate your dependency snippet</h4>
+    <p>Select the capabilities your project needs; the snippet updates accordingly.</p>
+    <label><input type="checkbox" id="feat-sys" checked> <code>sys</code> — core Netmap API</label><br>
+    <label><input type="checkbox" id="feat-tokio"> <code>tokio-async</code> — Tokio integration</label><br>
+    <label><input type="checkbox" id="feat-fallback"> <code>fallback</code> — no-Netmap builds</label>
+    <pre><code id="cargo-out">[dependencies]
+netmap-rs = { version = "0.3", features = ["sys"] }</code><button class="copy-btn" data-copy="cargo-out">Copy</button></pre>
+  </div>
+  <div class="note"><strong>Root access.</strong> Opening Netmap interfaces requires privilege, so
+  examples and apps are normally run under <code>sudo</code>. The virtual lab in Chapter 11 still
+  requires the kernel module, but it never touches a physical interface.</div>
+</section>
 
-        <h2 id="basic-usage">Basic Usage</h2>
-        <p>Here's a simple example of sending and receiving a packet on an interface:</p>
-        <pre><code id="code-basic-usage">use netmap_rs::prelude::*;
+<!-- 3 -->
+<section class="chapter" id="ch-concepts" data-title="3 · Core Concepts: Rings and Names">
+  <p class="kicker">Chapter 3 · Prerequisites: Chapters 1–2</p>
+  <h1>Core Concepts: Rings and Names</h1>
+  <p>Netmap models each network interface as a set of independent rings. A transmission (TX) ring
+  carries packets from the application to the wire, while a reception (RX) ring carries packets
+  from the wire to the application. Each ring is a fixed-size circular array of slots, and three
+  indices govern it: <code>head</code>, which marks the next slot to use; <code>tail</code>, which
+  marks the kernel’s position; and <code>cur</code>, which tracks the application’s cursor and
+  which in this crate follows <code>head</code> after every operation.</p>
+  <h2>The direction-aware contract</h2>
+  <p>Since 0.3.1, synchronisation is direction-aware: <code>Ring::sync()</code> issues
+  <code>NIOCTXSYNC</code> for TX rings and <code>NIOCRXSYNC</code> for RX rings. On RX rings,
+  received packets occupy the half-open range <code>[head, tail)</code> and are read starting at
+  <code>head</code>, after which <code>head</code> advances. A TX ring is full when
+  <code>(head + 1) % num_slots == tail</code>, and attempting to send into a full ring yields
+  <code>Error::InsufficientSpace</code> (or <code>WouldBlock</code> in the fallback channel).</p>
+  <div class="lab">
+    <h4>Exercise — Operate a TX ring</h4>
+    <p>This simulator models an 8-slot TX ring with the same fullness rule as the crate.
+    Send packets, then run a kernel drain (<code>sync</code>) to free slots.</p>
+    <div class="ring-slots" id="ring-slots" aria-live="polite"></div>
+    <div>
+      <button id="ring-send">Send one packet</button>
+      <button id="ring-batch" class="ghost">Reserve batch of 3</button>
+      <button id="ring-sync" class="ghost">sync (kernel drains 2)</button>
+      <button id="ring-reset" class="ghost">Reset</button>
+    </div>
+    <output id="ring-out">head=0 tail=0 cur=0 · ring empty.</output>
+  </div>
+  <h2>Interface names</h2>
+  <table>
+    <tr><th>Spelling</th><th>Meaning</th><th>Example</th></tr>
+    <tr><td>bare OS name</td><td>Hardware rings; the builder prepends <code>netmap:</code></td><td><code>"eth0"</code></td></tr>
+    <tr><td>trailing <code>^</code></td><td>Host-stack rings for that interface</td><td><code>"eth0^"</code></td></tr>
+    <tr><td><code>valeSWITCH:port</code></td><td>Port on an in-kernel VALE switch</td><td><code>"vale0:p0"</code></td></tr>
+    <tr><td><code>pipe{name</code> / <code>pipe}name</code></td><td>Master / slave ends of a Netmap pipe</td><td><code>"pipe{myipc}"</code></td></tr>
+  </table>
+  <p>Pipes default to one TX and one RX ring when the builder is given no explicit counts;
+  other interface kinds default to zero, which asks Netmap to allocate all available rings.
+  Names of at least <code>IFNAMSIZ</code> bytes are rejected with <code>Error::BindFail</code>.</p>
+</section>
+
+<!-- 4 -->
+<section class="chapter" id="ch-modules" data-title="4 · Guided Tour of the Modules">
+  <p class="kicker">Chapter 4 · Prerequisites: Chapter 3</p>
+  <h1>Guided Tour of the Modules</h1>
+  <p>The crate exposes six modules. The table below summarises each, after which the sections
+  that follow state the exact items a reader must know.</p>
+  <h2><code>error</code> — one enum for all failures</h2>
+  <p><code>Error</code> has eight variants: <code>Io</code>, <code>WouldBlock</code>,
+  <code>BindFail(String)</code>, <code>InvalidRingIndex(usize)</code>,
+  <code>PacketTooLarge(usize)</code>, <code>InsufficientSpace</code>,
+  <code>UnsupportedPlatform(String)</code>, and <code>FallbackUnsupported(String)</code>.
+  It converts into <code>std::io::Error</code>, which is what allows the async wrappers to
+  satisfy Tokio’s <code>AsyncRead</code> and <code>AsyncWrite</code> contracts.</p>
+  <h2><code>frame</code> — the packet view</h2>
+  <p><code>Frame&lt;'a&gt;</code> wraps a <code>Cow&lt;'a, [u8]&gt;</code>: frames received from a
+  live ring borrow the shared buffer without copying, while fallback frames own their bytes.
+  Construction is via <code>Frame::new</code> (borrowed), <code>Frame::new_borrowed</code> (an alias),
+  <code>Frame::new_owned</code>, or <code>From&lt;&amp;[u8]&gt;</code>. Inspection is via
+  <code>len</code>, <code>is_empty</code>, and <code>payload</code>, and <code>Frame</code>
+  additionally dereferences to <code>[u8]</code>.</p>
+  <h2><code>netmap</code> — opening interfaces</h2>
+  <table>
+    <tr><th>Item</th><th>Behaviour</th></tr>
+    <tr><td><code>NetmapBuilder::new(name)</code></td><td>Parses <code>netmap:</code> prefixes, <code>^</code> host suffixes, and pipe names</td></tr>
+    <tr><td><code>.num_tx_rings(n)</code> / <code>.num_rx_rings(n)</code></td><td>Requested ring counts; 0 means “all available” (1 by default on pipes)</td></tr>
+    <tr><td><code>.flags(f)</code></td><td>ORs operational <code>nr_flags</code> with internally derived registration flags</td></tr>
+    <tr><td><code>.build()</code></td><td>Calls <code>nm_open</code>; reports the actual ring counts from the descriptor</td></tr>
+    <tr><td><code>Netmap::tx_ring(i)</code> / <code>rx_ring(i)</code></td><td>Ring handles; out-of-range indices yield <code>InvalidRingIndex</code></td></tr>
+    <tr><td><code>num_tx_rings</code>, <code>num_rx_rings</code>, <code>is_host_if</code></td><td>Introspection of the opened interface</td></tr>
+  </table>
+  <h2><code>ring</code> — moving packets</h2>
+  <table>
+    <tr><th>Item</th><th>Behaviour</th></tr>
+    <tr><td><code>Ring::index</code>, <code>num_slots</code>, <code>head</code>, <code>tail</code>, <code>dir</code>, <code>direction</code>, <code>has_free_slots</code></td><td>Introspection; <code>direction()</code> returns the typed <code>RingDirection::Tx</code> or <code>Rx</code></td></tr>
+    <tr><td><code>Ring::sync</code></td><td>Direction-aware ioctl (<code>NIOCTXSYNC</code> vs <code>NIOCRXSYNC</code>)</td></tr>
+    <tr><td><code>TxRing::send</code></td><td>Copies one packet into the slot at <code>cur</code>; rejects oversize payloads</td></tr>
+    <tr><td><code>TxRing::reserve_batch(n)</code></td><td>Checks <code>n</code> free slots, else <code>InsufficientSpace</code></td></tr>
+    <tr><td><code>BatchReservation::packet(i, len)</code> + <code>commit()</code></td><td>Zero-copy fill of each reserved slot, then a single <code>head</code> advance</td></tr>
+    <tr><td><code>RxRing::recv</code> / <code>recv_batch</code></td><td>Reads at <code>head</code> and advances it; returns <code>None</code> / 0 when empty</td></tr>
+  </table>
+  <h2><code>fallback</code>, <code>tokio_async</code>, and the re-exports</h2>
+  <p><code>fallback</code> offers <code>FallbackTxRing</code>, <code>FallbackRxRing</code>, and
+  <code>create_fallback_channel(max_size)</code>, which share one bounded queue behind an
+  <code>Arc&lt;Mutex&lt;…&gt;&gt;</code>; a full queue reports <code>WouldBlock</code>. These are
+  examined in Chapter 9. <code>tokio_async</code> provides <code>TokioNetmap</code>,
+  <code>AsyncNetmapRxRing</code>, and <code>AsyncNetmapTxRing</code> and is examined in
+  Chapter 8. Finally, the crate root re-exports the raw bindings as <code>ffi</code> and gathers
+  the everyday types (<code>Error</code>, <code>Frame</code>, and, under <code>sys</code>,
+  <code>Netmap</code>, <code>NetmapBuilder</code>, <code>Ring</code>, <code>RxRing</code>,
+  <code>TxRing</code>) into <code>prelude</code>.</p>
+</section>
+
+<!-- 5 -->
+<section class="chapter" id="ch-basic" data-title="5 · Basic Usage: Send and Receive">
+  <p class="kicker">Chapter 5 · Prerequisites: Chapters 3–4</p>
+  <h1>Basic Usage: Send and Receive</h1>
+  <p>The canonical program opens an interface, takes one TX and one RX handle, sends a packet,
+  synchronises, and polls for its return. Three equivalent framings follow: synchronous Netmap,
+  asynchronous Tokio, and the dependency-free fallback.</p>
+  <div class="tabs">
+    <div class="tab-bar" role="tablist">
+      <button class="active" data-tab="tab-sync">Synchronous</button>
+      <button data-tab="tab-async">Tokio async</button>
+      <button data-tab="tab-fallback">Fallback</button>
+    </div>
+    <div class="tab-pane active" id="tab-sync">
+<pre><code id="code-sync">use netmap_rs::prelude::*;
 use std::thread::sleep;
 use std::time::Duration;
 
-fn main() -> Result&lt;(), Error&gt; {
+fn main() -&gt; Result&lt;(), Error&gt; {
     let nm = NetmapBuilder::new("eth0")
         .num_tx_rings(1)
         .num_rx_rings(1)
@@ -313,262 +458,550 @@ fn main() -> Result&lt;(), Error&gt; {
     let mut rx_ring = nm.rx_ring(0)?;
 
     let packet_data = b"hello netmap!";
-
     tx_ring.send(packet_data)?;
-    tx_ring.sync();
-    println!("Sent packet: {:?}", packet_data);
+    tx_ring.sync(); // hand the packet to the hardware
 
-    // ... (receive logic) ...
-
+    for _ in 0..5 {
+        rx_ring.sync(); // publish consumed slots, observe arrivals
+        while let Some(frame) = rx_ring.recv() {
+            println!("Received: {:?}", frame.payload());
+            return Ok(());
+        }
+        sleep(Duration::from_millis(100));
+    }
+    eprintln!("No packet returned; check the interface setup.");
     Ok(())
-}</code><button class="copy-btn" onclick="copyToClipboard('code-basic-usage')">Copy</button></pre>
-
-        <h2 id="public-api">Public API</h2>
-        <p>This section provides a detailed overview of the public API of <code>netmap-rs</code>.</p>
-
-        <h3><code>NetmapBuilder</code></h3>
-        <p>The <code>NetmapBuilder</code> is used to configure and create a <code>Netmap</code> instance.</p>
-        <ul>
-            <li><strong><code>NetmapBuilder::new(ifname_str: &str) -> Self</code></strong>: Creates a new builder for the given Netmap interface name. <code>ifname_str</code> can be a simple interface name like <code>"eth0"</code>, or <code>"eth0^"</code> to access the host stack.</li>
-        </ul>
-        <pre><code id="code-netmap-builder-new">use netmap_rs::NetmapBuilder;
-
-let builder = NetmapBuilder::new("eth0");
-</code><button class="copy-btn" onclick="copyToClipboard('code-netmap-builder-new')">Copy</button></pre>
-        <ul>
-            <li><strong><code>num_tx_rings(self, num: usize) -> Self</code></strong>: Sets the desired number of transmission (TX) rings.</li>
-        </ul>
-        <pre><code id="code-netmap-builder-num-tx-rings">use netmap_rs::NetmapBuilder;
-
-let builder = NetmapBuilder::new("eth0").num_tx_rings(2);
-</code><button class="copy-btn" onclick="copyToClipboard('code-netmap-builder-num-tx-rings')">Copy</button></pre>
-        <ul>
-            <li><strong><code>num_rx_rings(self, num: usize) -> Self</code></strong>: Sets the desired number of reception (RX) rings.</li>
-        </ul>
-        <pre><code id="code-netmap-builder-num-rx-rings">use netmap_rs::NetmapBuilder;
-
-let builder = NetmapBuilder::new("eth0").num_rx_rings(2);
-</code><button class="copy-btn" onclick="copyToClipboard('code-netmap-builder-num-rx-rings')">Copy</button></pre>
-        <ul>
-            <li><strong><code>flags(self, flags: u32) -> Self</code></strong>: Sets additional flags for the Netmap request. See <code>&lt;net/netmap_user.h&gt;</code> for available flags.</li>
-            <li><strong><code>build(self) -> Result&lt;Netmap, Error&gt;</code></strong>: Consumes the builder and attempts to open the Netmap interface, returning a <code>Netmap</code> instance.</li>
-        </ul>
-        <pre><code id="code-netmap-builder-build">use netmap_rs::NetmapBuilder;
-
-let nm = NetmapBuilder::new("eth0").build();
-</code><button class="copy-btn" onclick="copyToClipboard('code-netmap-builder-build')">Copy</button></pre>
-
-        <h3><code>Netmap</code></h3>
-        <p>A <code>Netmap</code> instance represents an open Netmap interface.</p>
-        <ul>
-            <li><strong><code>num_tx_rings(&self) -> usize</code></strong>: Returns the number of configured TX rings.</li>
-            <li><strong><code>num_rx_rings(&self) -> usize</code></strong>: Returns the number of configured RX rings.</li>
-            <li><strong><code>is_host_if(&self) -> bool</code></strong>: Returns <code>true</code> if the <code>Netmap</code> instance is configured for host stack rings.</li>
-            <li><strong><code>tx_ring(&self, index: usize) -> Result&lt;TxRing, Error&gt;</code></strong>: Returns a handle to a specific TX ring.</li>
-            <li><strong><code>rx_ring(&self, index: usize) -> Result&lt;RxRing, Error&gt;</code></strong>: Returns a handle to a specific RX ring.</li>
-        </ul>
-
-        <h3><code>Ring</code></h3>
-        <p>Represents a generic Netmap ring.</p>
-        <ul>
-            <li><strong><code>index(&self) -> usize</code></strong>: Returns the index of the ring.</li>
-            <li><strong><code>num_slots(&self) -> usize</code></strong>: Returns the total number of slots in the ring.</li>
-            <li><strong><code>sync(&self)</code></strong>: Synchronizes the ring with the NIC, making sent packets available to the hardware and updating the ring's state to see new packets.</li>
-        </ul>
-
-        <h3><code>TxRing</code></h3>
-        <p>A handle to a transmission (TX) ring.</p>
-        <ul>
-            <li><strong><code>send(&mut self, buf: &[u8]) -> Result&lt;(), Error&gt;</code></strong>: Sends a single packet. The data in <code>buf</code> is copied to a slot in the ring.</li>
-            <li><strong><code>max_payload_size(&self) -> usize</code></strong>: Returns the maximum payload size for a single packet in this ring.</li>
-            <li><strong><code>reserve_batch(&mut self, count: usize) -> Result&lt;BatchReservation, Error&gt;</code></strong>: Reserves space for sending a batch of packets. Returns a <code>BatchReservation</code> instance.</li>
-        </ul>
-
-        <h3><code>BatchReservation</code></h3>
-        <p>A reservation for a batch of packets to be sent.</p>
-        <ul>
-            <li><strong><code>packet(&mut self, index: usize, len: usize) -> Result&lt;&mut [u8], Error&gt;</code></strong>: Gets a mutable slice for a packet in the batch. You can write your packet data to this slice.</li>
-            <li><strong><code>commit(self)</code></strong>: Commits the batch, making the packets visible to the NIC.</li>
-        </ul>
-
-        <h3><code>RxRing</code></h3>
-        <p>A handle to a reception (RX) ring.</p>
-        <ul>
-            <li><strong><code>recv(&mut self) -> Option&lt;Frame&gt;</code></strong>: Receives a single packet from the ring. Returns a <code>Frame</code> if a packet is available.</li>
-            <li><strong><code>recv_batch(&mut self, batch: &mut [Frame]) -> usize</code></strong>: Receives a batch of packets. The <code>batch</code> slice is filled with available frames, and the number of received frames is returned.</li>
-        </ul>
-
-        <h3><code>Frame</code></h3>
-        <p>A <code>Frame</code> represents a received packet. It can be either a zero-copy view of a packet buffer (from a <code>Netmap</code> ring) or an owned buffer (in fallback mode).</p>
-        <ul>
-            <li><strong><code>new(data: &'a [u8]) -> Self</code></strong>: Creates a new frame from a borrowed byte slice (zero-copy).</li>
-            <li><strong><code>new_owned(data: Vec<u8>) -> Self</code></strong>: Creates a new frame from an owned vector of bytes (for fallback).</li>
-            <li><strong><code>len(&self) -> usize</code></strong>: Returns the length of the frame.</li>
-            <li><strong><code>is_empty(&self) -> bool</code></strong>: Returns <code>true</code> if the frame is empty.</li>
-            <li><strong><code>payload(&self) -> &[u8]</code></strong>: Returns a slice containing the packet's payload.</li>
-        </ul>
-        <pre><code id="code-frame-payload">if let Some(frame) = rx_ring.recv() {
-    println!("Received packet of length {}: {:?}", frame.len(), frame.payload());
-}
-</code><button class="copy-btn" onclick="copyToClipboard('code-frame-payload')">Copy</button></pre>
-
-        <h3>Async API (<code>tokio-async</code> feature)</h3>
-        <p>When the <code>tokio-async</code> feature is enabled, you can use the following async wrappers for non-blocking I/O with Tokio.</p>
-
-        <h4><code>TokioNetmap</code></h4>
-        <p>The <code>TokioNetmap</code> is the entry point for async operations.</p>
-        <ul>
-            <li><strong><code>TokioNetmap::new(netmap: Netmap) -> io::Result<Self></code></strong>: Creates a new <code>TokioNetmap</code> by wrapping a <code>Netmap</code> instance.</li>
-        </ul>
-        <pre><code id="code-tokio-netmap-new">use netmap_rs::NetmapBuilder;
+}</code><button class="copy-btn" data-copy="code-sync">Copy</button></pre>
+    </div>
+    <div class="tab-pane" id="tab-async">
+<pre><code id="code-async-tab">use netmap_rs::NetmapBuilder;
 use netmap_rs::tokio_async::TokioNetmap;
-
-# async fn run() -> Result<(), Box<dyn std::error::Error>> {
-let nm = NetmapBuilder::new("eth0").build()?;
-let tokio_nm = TokioNetmap::new(nm)?;
-# Ok(())
-# }
-</code><button class="copy-btn" onclick="copyToClipboard('code-tokio-netmap-new')">Copy</button></pre>
-        <ul>
-            <li><strong><code>rx_ring(&self, ring_idx: usize) -> Result<AsyncNetmapRxRing, Error></code></strong>: Returns an async wrapper for a specific RX ring.</li>
-            <li><strong><code>tx_ring(&self, ring_idx: usize) -> Result<AsyncNetmapTxRing, Error></code></strong>: Returns an async wrapper for a specific TX ring.</li>
-        </ul>
-
-        <h4><code>AsyncNetmapRxRing</code></h4>
-        <p>An <code>AsyncRead</code> implementation for a Netmap RX ring. You can use the methods from <code>tokio::io::AsyncReadExt</code> to read from the ring.</p>
-        <pre><code id="code-async-rx-ring-read"># use netmap_rs::NetmapBuilder;
-# use netmap_rs::tokio_async::TokioNetmap;
-# use tokio::io::AsyncReadExt;
-# async fn run() -> Result<(), Box<dyn std::error::Error>> {
-# let nm = NetmapBuilder::new("eth0").build()?;
-# let tokio_nm = TokioNetmap::new(nm)?;
-let mut rx_ring = tokio_nm.rx_ring(0)?;
-let mut buf = [0; 1500];
-let n = rx_ring.read(&mut buf).await?;
-# Ok(())
-# }
-</code><button class="copy-btn" onclick="copyToClipboard('code-async-rx-ring-read')">Copy</button></pre>
-
-        <h4><code>AsyncNetmapTxRing</code></h4>
-        <p>An <code>AsyncWrite</code> implementation for a Netmap TX ring. You can use the methods from <code>tokio::io::AsyncWriteExt</code> to write to the ring.</p>
-        <pre><code id="code-async-tx-ring-write"># use netmap_rs::NetmapBuilder;
-# use netmap_rs::tokio_async::TokioNetmap;
-# use tokio::io::AsyncWriteExt;
-# async fn run() -> Result<(), Box<dyn std::error::Error>> {
-# let nm = NetmapBuilder::new("eth0").build()?;
-# let tokio_nm = TokioNetmap::new(nm)?;
-let mut tx_ring = tokio_nm.tx_ring(0)?;
-tx_ring.write_all(b"hello async netmap").await?;
-tx_ring.flush().await?;
-# Ok(())
-# }
-</code><button class="copy-btn" onclick="copyToClipboard('code-async-tx-ring-write')">Copy</button></pre>
-
-        <h3><code>Error</code> Enum</h3>
-        <p>The <code>Error</code> enum represents all possible errors that can occur in <code>netmap-rs</code>.</p>
-        <ul>
-            <li><code>Io(io::Error)</code>: An I/O error from the underlying system.</li>
-            <li><code>WouldBlock</code>: The operation would block.</li>
-            <li><code>BindFail(String)</code>: Failed to bind to a Netmap interface.</li>
-            <li><code>InvalidRingIndex(usize)</code>: The specified ring index is out of bounds.</li>
-            <li><code>PacketTooLarge(usize)</code>: The packet is too large for the ring buffer.</li>
-            <li><code>InsufficientSpace</code>: There is not enough space in the ring buffer.</li>
-            <li><code>UnsupportedPlatform(String)</code>: The platform is not supported.</li>
-            <li><code>FallbackUnsupported(String)</code>: The feature is not supported in fallback mode.</li>
-        </ul>
-
-        <h3>Fallback API</h3>
-        <p>For platforms without Netmap support, a fallback implementation is provided.</p>
-        <ul>
-            <li><strong><code>create_fallback_channel(max_size: usize) -> (FallbackTxRing, FallbackRxRing)</code></strong>: Creates a connected pair of fallback TX and RX rings that simulate a Netmap pipe.</li>
-        </ul>
-        <pre><code id="code-fallback-channel">use netmap_rs::fallback::create_fallback_channel;
-
-let (tx, rx) = create_fallback_channel(64);
-tx.send(b"hello fallback").unwrap();
-if let Some(frame) = rx.recv() {
-    assert_eq!(frame.payload(), b"hello fallback");
-}
-</code><button class="copy-btn" onclick="copyToClipboard('code-fallback-channel')">Copy</button></pre>
-
-        <h2 id="advanced-usage">Advanced Usage</h2>
-        <h3>Thread-per-Ring</h3>
-        <p>For maximum performance, dedicate a thread to each transmission (TX) and reception (RX) ring. This pattern is ideal for multi-core systems.</p>
-        <pre><code id="code-thread-per-ring">use netmap_rs::prelude::*;
-use std::thread;
-
-fn main() -> Result&lt;(), Error&gt; {
-    let nm = NetmapBuilder::new("eth0")
-        .num_tx_rings(4)
-        .num_rx_rings(4)
-        .build()?;
-
-    // Spawn threads for each ring...
-    // See the full example in the repository.
-    Ok(())
-}</code><button class="copy-btn" onclick="copyToClipboard('code-thread-per-ring')">Copy</button></pre>
-
-        <h3>Async Support with Tokio</h3>
-        <p>Enable the <code>tokio-async</code> feature for async/await support:</p>
-        <pre><code id="code-tokio-feature">[dependencies]
-netmap-rs = { version = "0.3", features = ["sys", "tokio-async"] }</code><button class="copy-btn" onclick="copyToClipboard('code-tokio-feature')">Copy</button></pre>
-        <pre><code id="code-tokio-usage">use netmap_rs::tokio_async::*;
-use tokio::time::{sleep, Duration};
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 #[tokio::main]
-async fn main() -> Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-    let nm = TokioNetmap::new("eth0").await?;
-    let mut rx_ring = nm.async_rx_ring(0).await?;
+async fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    let nm = NetmapBuilder::new("netmap:pipe{example}").build()?;
+    let tokio_nm = TokioNetmap::new(nm)?;
 
-    // ... (async receive logic) ...
+    let mut tx = tokio_nm.tx_ring(0)?;
+    let mut rx = tokio_nm.rx_ring(0)?;
+
+    tx.write_all(b"hello async netmap").await?;
+    tx.flush().await?; // performs NIOCTXSYNC
+
+    let mut buf = [0u8; 2048];
+    let n = rx.read(&amp;mut buf).await?; // performs NIOCRXSYNC
+    println!("Received: {:?}", &amp;buf[..n]);
     Ok(())
-}</code><button class="copy-btn" onclick="copyToClipboard('code-tokio-usage')">Copy</button></pre>
-
-        <h2 id="troubleshooting">Troubleshooting</h2>
-        <p>Common issues include "netmap_user.h not found" (install Netmap), permission errors (run with sudo), and "NetmapBuilder not found" (enable the <code>sys</code> feature).</p>
-        
-        <h3>Performance Tips</h3>
-        <ul>
-            <li>Use multiple rings to distribute load across CPU cores</li>
-            <li>Pre-allocate packet buffers when possible</li>
-            <li>Batch operations to minimize synchronization overhead</li>
-            <li>Consider using huge pages for better memory performance</li>
-        </ul>
+}</code><button class="copy-btn" data-copy="code-async-tab">Copy</button></pre>
     </div>
+    <div class="tab-pane" id="tab-fallback">
+<pre><code id="code-fallback-tab">use netmap_rs::fallback::create_fallback_channel;
 
-    <script>
-        // Copy to clipboard functionality
-        function copyToClipboard(elementId) {
-            const codeElement = document.getElementById(elementId);
-            const textArea = document.createElement('textarea');
-            textArea.value = codeElement.textContent;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            
-            // Visual feedback
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = 'Copied!';
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 2000);
+fn main() {
+    let (tx, rx) = create_fallback_channel(64);
+    tx.send(b"hello fallback").unwrap();
+    if let Some(frame) = rx.recv() {
+        assert_eq!(frame.payload(), b"hello fallback");
+    }
+}</code><button class="copy-btn" data-copy="code-fallback-tab">Copy</button></pre>
+    </div>
+  </div>
+  <div class="note"><strong>Audit note.</strong> An earlier edition of this page showed a Tokio
+  example calling <code>TokioNetmap::new("eth0").await</code>, which does not exist. The corrected
+  sequence above — build a <code>Netmap</code> first, wrap it with <code>TokioNetmap::new</code>,
+  then take ring handles — matches <code>src/tokio_async.rs</code>.</div>
+</section>
+
+<!-- 6 -->
+<section class="chapter" id="ch-examples" data-title="6 · The Examples Catalogue">
+  <p class="kicker">Chapter 6 · Prerequisites: Chapter 5</p>
+  <h1>The Examples Catalogue</h1>
+  <p>Twelve examples ship with the crate, all requiring the <code>sys</code> feature except where
+  noted. They fall into four groups: loopback fundamentals, pipes, host-stack access, and
+  reliability patterns.</p>
+  <table>
+    <tr><th>Example</th><th>What it demonstrates</th><th>Run</th></tr>
+    <tr><td><code>ping_pong</code></td><td>Minimal send/receive round trip</td><td><code>--example ping_pong</code></td></tr>
+    <tr><td><code>example</code></td><td>Error handling and the current API surface</td><td><code>--example example</code></td></tr>
+    <tr><td><code>poll_basic</code></td><td>Waiting with the <code>polling</code> crate instead of busy-looping</td><td><code>--example poll_basic</code></td></tr>
+    <tr><td><code>pipe_threads</code></td><td>Zero-copy thread-to-thread pipe in one process</td><td><code>--example pipe_threads</code></td></tr>
+    <tr><td><code>pipe_sender_process</code> / <code>pipe_receiver_process</code></td><td>Two-process pipe IPC (run receiver first)</td><td><code>--example pipe_receiver_process</code> then <code>--example pipe_sender_process</code></td></tr>
+    <tr><td><code>host_receive</code> / <code>host_transmit</code></td><td>Host-stack rings via the <code>^</code> suffix; transmit builds a UDP packet</td><td><code>--example host_receive -- netmap:eth0^</code></td></tr>
+    <tr><td><code>sliding_window_arq</code></td><td>Reliable delivery with acknowledgements</td><td><code>--example sliding_window_arq</code></td></tr>
+    <tr><td><code>fec</code></td><td>Forward error correction (2 data + 1 parity shard)</td><td><code>--example fec</code></td></tr>
+    <tr><td><code>thread_per_ring</code></td><td>One thread per ring with core pinning</td><td><code>--example thread_per_ring</code></td></tr>
+    <tr><td><code>tokio_pipe_async</code></td><td>Async I/O over a pipe (needs <code>tokio-async</code>)</td><td><code>--example tokio_pipe_async --features tokio-async</code></td></tr>
+  </table>
+  <div class="lab">
+    <h4>Exercise — Build a run command</h4>
+    <p>Choose a target and an interface to compose the exact invocation.</p>
+    <select id="cmd-target">
+      <option value="--example ping_pong">ping_pong (example)</option>
+      <option value="--example pipe_threads">pipe_threads (example)</option>
+      <option value="--example host_receive -- netmap:eth0^">host_receive (example)</option>
+      <option value="--example tokio_pipe_async">tokio_pipe_async (example)</option>
+      <option value="--bin pkt-gen -- -i vale0:p0 -f tx">pkt-gen (app)</option>
+      <option value="--bin bridge -- -a vale0:p0 -b vale0:p1">bridge (app)</option>
+    </select>
+    <select id="cmd-features">
+      <option value="sys">features = sys</option>
+      <option value="tokio-async">features = tokio-async</option>
+    </select>
+    <div><button id="cmd-build">Compose command</button></div>
+    <pre><code id="cmd-out">$ cargo run --features sys --example ping_pong</code><button class="copy-btn" data-copy="cmd-out">Copy</button></pre>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="chapter" id="ch-apps" data-title="7 · The Applications Catalogue">
+  <p class="kicker">Chapter 7 · Prerequisites: Chapters 5–6</p>
+  <h1>The Applications Catalogue</h1>
+  <p>The <code>apps/</code> directory mirrors the layout of the upstream Netmap C repository and
+  holds five ready-to-run binaries. All require <code>sys</code> (hence the kernel module), yet
+  all operate exclusively on VALE ports and pipes, so none disturbs a live network interface.</p>
+  <table>
+    <tr><th>Binary</th><th>Purpose</th><th>Typical invocation</th></tr>
+    <tr><td><code>pkt-gen</code></td><td>Packet generator and drainer; the Rust counterpart of upstream <code>pkt-gen</code></td><td><code>cargo run --bin pkt-gen --features sys -- -i vale0:p0 -f tx -n 1000 -s 64 -b 32</code></td></tr>
+    <tr><td><code>vale-ctl</code></td><td>Opens VALE ports on demand and reports their ring layout</td><td><code>cargo run --bin vale-ctl --features sys -- -a vale0:p0 -a vale0:p1</code></td></tr>
+    <tr><td><code>ping</code></td><td>Round-trip latency probe across a pipe or VALE ports</td><td><code>cargo run --bin ping --features sys -- -c 100</code></td></tr>
+    <tr><td><code>bridge</code></td><td>Forwards frames between two VALE ports in both directions</td><td><code>cargo run --bin bridge --features sys -- -a vale0:porta -b vale0:portb</code></td></tr>
+    <tr><td><code>tokio-proxy</code></td><td>Bidirectional async pipe relay (needs <code>tokio-async</code>)</td><td><code>cargo run --bin tokio-proxy --features tokio-async</code></td></tr>
+  </table>
+  <p>A sensible first session is to create two VALE ports with <code>vale-ctl</code>, bridge them,
+  and then drive load with <code>pkt-gen</code> while observing the bridge forward it. Because
+  everything is in-kernel, the experiment is both realistic at the Netmap API level and entirely
+  safe for the host network.</p>
+</section>
+
+<!-- 8 -->
+<section class="chapter" id="ch-async" data-title="8 · Asynchronous I/O with Tokio">
+  <p class="kicker">Chapter 8 · Prerequisites: Chapters 3–5</p>
+  <h1>Asynchronous I/O with Tokio</h1>
+  <p>Under the <code>tokio-async</code> feature, <code>TokioNetmap</code> wraps a
+  <code>Netmap</code> instance’s file descriptor in <code>tokio::io::unix::AsyncFd</code> so that
+  ring operations participate in the Tokio reactor instead of blocking a thread.</p>
+  <h2>The three types</h2>
+  <ul>
+    <li><code>TokioNetmap::new(netmap)</code> registers the descriptor; <code>rx_ring(i)</code> and
+    <code>tx_ring(i)</code> validate the index and capture a raw ring pointer tied to the shared
+    <code>AsyncFd</code>.</li>
+    <li><code>AsyncNetmapRxRing</code> implements <code>AsyncRead</code>. Each
+    <code>poll_read</code> first issues <code>NIOCRXSYNC</code> so arrivals become visible, copies
+    one packet into the caller’s buffer, advances <code>head</code>, and otherwise parks the task
+    until the descriptor reads ready.</li>
+    <li><code>AsyncNetmapTxRing</code> implements <code>AsyncWrite</code>. <code>poll_write</code>
+    copies one packet into a free slot (parking the task when the ring is full), while
+    <code>poll_flush</code> and <code>poll_shutdown</code> issue <code>NIOCTXSYNC</code> to hand
+    queued packets to the kernel.</li>
+  </ul>
+  <div class="note"><strong>Correctness point.</strong> The <code>sync</code> calls are not optional
+  conveniences; without the RX sync the reader would never observe traffic, and without the TX sync
+  on flush nothing written would reach the kernel. The wrappers therefore perform them on every
+  relevant poll.</div>
+  <p>See <code>examples/tokio_pipe_async.rs</code> and <code>apps/tokio-proxy</code> for complete
+  programs, and note that the 0.3.1 history records a fix to <code>poll_read</code> so that it reads
+  at <code>ring.head</code> rather than a stale offset.</p>
+</section>
+
+<!-- 9 -->
+<section class="chapter" id="ch-fallback" data-title="9 · Fallback Mode Without Netmap">
+  <p class="kicker">Chapter 9 · Prerequisites: Chapter 4</p>
+  <h1>Fallback Mode Without Netmap</h1>
+  <p>On machines where Netmap is unavailable — continuous-integration runners, for instance — the
+  crate still builds without the <code>sys</code> feature, exposing <code>Error</code>,
+  <code>Frame</code>, and the <code>fallback</code> channel. <code>create_fallback_channel(max)</code>
+  returns a connected <code>(FallbackTxRing, FallbackRxRing)</code> pair over a shared bounded
+  queue: <code>send</code> copies into the queue and reports <code>WouldBlock</code> when full,
+  while <code>recv</code> pops owned frames in FIFO order.</p>
+  <p>The fallback is a behavioural stand-in rather than a performance equivalent. It preserves the
+  send/receive shape of the API so that protocol logic above the rings can be developed and unit
+  tested anywhere, while any timing or throughput claim must still be validated against real rings
+  as described in Chapters 10 and 11.</p>
+</section>
+
+<!-- 10 -->
+<section class="chapter" id="ch-perf" data-title="10 · Performance: Threads, Batches, Benches">
+  <p class="kicker">Chapter 10 · Prerequisites: Chapters 3–7</p>
+  <h1>Performance: Threads, Batches, and Benches</h1>
+  <p>Throughput in this crate comes from three compounding choices: dedicating threads to rings,
+  amortising synchronisation with batches, and measuring with Criterion.</p>
+  <h2>Thread-per-ring</h2>
+  <p>Because each ring handle is <code>Send</code>, a program may hand every TX and RX ring to its
+  own thread and pin each thread to a core with <code>core_affinity</code>. The
+  <code>thread_per_ring</code> example shows the pattern: open N rings of each direction, spawn one
+  thread per handle, and join them. Consult NUMA topology when choosing the pinning so that rings
+  serving the same interface share a socket where possible.</p>
+  <h2>Batch reservations</h2>
+  <p>Where <code>send</code> copies one packet and advances <code>head</code> immediately,
+  <code>reserve_batch(n)</code> first verifies that <code>n</code> slots are free, then hands out
+  <code>&amp;mut [u8]</code> slices for direct filling via <code>packet(i, len)</code>, and finally
+  <code>commit()</code> advances <code>head</code> once for the whole batch. The
+  <code>pkt-gen</code> app’s <code>-b</code> flag exercises exactly this path.</p>
+  <h2>Benches</h2>
+  <p><code>benches/latency.rs</code> measures single-packet round-trip cost and
+  <code>benches/throughput.rs</code> measures sustained transfer, both through Criterion:</p>
+  <pre><code id="code-bench">$ cargo bench --features sys --bench latency
+$ cargo bench --features sys --bench throughput</code><button class="copy-btn" data-copy="code-bench">Copy</button></pre>
+  <div class="lab">
+    <h4>Exercise — Throughput checklist</h4>
+    <p>Tick each practice as it is applied; progress is remembered in this browser.</p>
+    <ul class="checklist" id="perf-check">
+      <li><label><input type="checkbox" data-k="batch"> Batch sends with <code>reserve_batch</code>/<code>commit</code></label></li>
+      <li><label><input type="checkbox" data-k="pin"> Pin ring threads with <code>core_affinity</code></label></li>
+      <li><label><input type="checkbox" data-k="prealloc"> Pre-allocate buffers; avoid allocation on the hot path</label></li>
+      <li><label><input type="checkbox" data-k="rings"> Spread load over multiple rings and cores</label></li>
+      <li><label><input type="checkbox" data-k="bench"> Record <code>cargo bench</code> baselines before tuning</label></li>
+    </ul>
+    <output id="perf-out"></output>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="chapter" id="ch-lab" data-title="11 · The Virtual Lab and Test Suite">
+  <p class="kicker">Chapter 11 · Prerequisites: Chapters 2–3</p>
+  <h1>The Virtual Lab and Test Suite</h1>
+  <p>No physical NIC is needed to learn or verify this crate. Netmap provides two purely virtual,
+  in-memory port kinds: VALE ports (<code>vale0:name</code>), which behave as ports on an in-kernel
+  Ethernet switch and which enforce the 14-byte Ethernet minimum frame size; and Netmap pipes
+  (<code>pipe{name</code> master, <code>pipe}name</code> slave), which form a bidirectional channel
+  between two endpoints. Opening either registers it on demand, so the canonical first experiment is:</p>
+  <pre><code id="code-lab">$ cargo run --example ping_pong --features sys</code><button class="copy-btn" data-copy="code-lab">Copy</button></pre>
+  <h2>Test suite map</h2>
+  <table>
+    <tr><th>Suite</th><th>Scope</th></tr>
+    <tr><td>Unit tests in <code>src/</code></td><td>Frame semantics, error display strings, fallback FIFO and fullness, <code>From</code> conversions, <code>Send + Sync</code> bounds</td></tr>
+    <tr><td><code>tests/mock.rs</code></td><td>Fallback ring behaviour without Netmap</td></tr>
+    <tr><td><code>tests/tests.rs</code></td><td>Updated API surface checks</td></tr>
+    <tr><td><code>tests/integration.rs</code></td><td>End-to-end VALE and pipe flows; parallel-safe via unique port names per test</td></tr>
+  </table>
+  <p>Host-ring tests against interfaces such as <code>netmap:lo^</code> are gated behind
+  <code>NETMAP_TEST_HOST_RINGS=1</code>, so the default suite never touches loopback or any live
+  NIC:</p>
+  <pre><code id="code-test">$ cargo test --features sys
+$ NETMAP_TEST_HOST_RINGS=1 cargo test --features sys  # opts into host-ring tests</code><button class="copy-btn" data-copy="code-test">Copy</button></pre>
+</section>
+
+<!-- 12 -->
+<section class="chapter" id="ch-trouble" data-title="12 · Troubleshooting and FAQ">
+  <p class="kicker">Chapter 12 · Prerequisites: Chapters 2, 5</p>
+  <h1>Troubleshooting and FAQ</h1>
+  <table>
+    <tr><th>Symptom</th><th>Likely cause and remedy</th></tr>
+    <tr><td><code>netmap_user.h not found</code></td><td>Netmap C library missing; install per Chapter 2 or set <code>NETMAP_LOCATION</code>.</td></tr>
+    <tr><td><code>undefined reference to nm_open</code></td><td>Link failure; confirm the <code>sys</code> feature is enabled and headers were found.</td></tr>
+    <tr><td><code>NetmapBuilder</code> not found</td><td>The <code>sys</code> feature is off; add <code>features = ["sys"]</code> to the dependent crate.</td></tr>
+    <tr><td><code>Failed to open interface</code></td><td>Usually privilege (run under <code>sudo</code>), a nonexistent interface (<code>ip link show</code>), an unloaded module (<code>sudo insmod netmap.ko</code>), or an unsupported driver.</td></tr>
+    <tr><td><code>Operation would block</code></td><td>Normal backpressure on a full ring or an empty read; retry after <code>sync</code>.</td></tr>
+    <tr><td>Edition errors mentioning 2024</td><td>Stale checkout; 0.3.0 moved the crate to edition 2021 for toolchain compatibility.</td></tr>
+  </table>
+  <h2>Frequently asked questions</h2>
+  <p><strong>Must I disturb production interfaces to experiment?</strong> No. VALE ports and pipes
+  are virtual and isolated; see Chapter 11.</p>
+  <p><strong>Why does <code>recv</code> return <code>None</code> right after a send?</strong>
+  Because each side needs its <code>sync</code>: TX sync hands packets to the kernel, RX sync
+  publishes consumed slots and observes arrivals. The loop in Chapter 5 shows the rhythm.</p>
+  <p><strong>Where is the generated API reference?</strong> On
+  <a href="https://docs.rs/netmap-rs">docs.rs/netmap-rs</a>, which complements but does not replace
+  this narrative guide.</p>
+</section>
+
+<!-- appendix -->
+<section class="chapter" id="ch-appendix" data-title="Appendix · Changelog, License, Links">
+  <p class="kicker">Appendix</p>
+  <h1>Changelog, License, and Links</h1>
+  <h2>What changed in 0.3.1 (2026-08-18)</h2>
+  <ul>
+    <li>Added the five <code>apps/</code> utilities alongside the twelve examples.</li>
+    <li>Migrated to the Netmap 14 API via <code>netmap-min-sys</code> 0.3.1 (breaking).</li>
+    <li>RX reads at <code>head</code>; <code>sync</code> is direction-aware; Tokio
+    <code>poll_read</code> reads at <code>head</code>.</li>
+    <li>Host-ring tests gated behind <code>NETMAP_TEST_HOST_RINGS=1</code>; integration tests are parallel-safe.</li>
+    <li>Examples and benches fixed against the current API with zero clippy warnings.</li>
+  </ul>
+  <h2>What changed in 0.3.0 (2025-10-24)</h2>
+  <ul>
+    <li>Edition moved from 2024 to 2021; dependencies modernised throughout.</li>
+    <li><code>build.rs</code> detection with <code>NETMAP_LOCATION</code> support and diagnostics.</li>
+    <li><code>Frame::new</code> alias and expanded README troubleshooting.</li>
+  </ul>
+  <h2>License, authorship, and links</h2>
+  <p>Dual-licensed under MIT and Apache-2.0, at the user’s option. Author: Meshack Bahati Ouma
+  (<code>bahatikylemeshack@gmail.com</code>).</p>
+  <ul>
+    <li><a href="https://github.com/meshackbahati/netmap-rs">Repository</a></li>
+    <li><a href="https://crates.io/crates/netmap-rs">crates.io</a></li>
+    <li><a href="https://docs.rs/netmap-rs">API documentation</a></li>
+    <li><a href="http://info.iet.unipi.it/~luigi/netmap/">Upstream Netmap project</a></li>
+  </ul>
+</section>
+
+</main>
+</div>
+
+<div class="pager" style="max-width:72rem; margin:0 auto; padding:0 2rem;">
+  <button id="prev-btn">← Previous chapter</button>
+  <span id="page-num" style="color:var(--muted); font-size:0.9rem; align-self:center;"></span>
+  <button id="next-btn">Next chapter →</button>
+</div>
+
+<footer class="colophon">
+  <p>netmap-rs, version 0.3.1. This book was revised against the crate sources in September 2026;
+  where prose and sources disagree, the sources govern. Reading progress is stored locally in the
+  browser and never transmitted.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var chapters = Array.prototype.slice.call(document.querySelectorAll(".chapter"));
+  var toc = document.getElementById("toc");
+  var progress = document.getElementById("progress");
+  var pageNum = document.getElementById("page-num");
+  var search = document.getElementById("search");
+  var READ_KEY = "netmap-rs-book-read";
+  var read = {};
+  try { read = JSON.parse(localStorage.getItem(READ_KEY) || "{}"); } catch (e) { read = {}; }
+
+  chapters.forEach(function (ch, i) {
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.href = "#" + ch.id;
+    var num = document.createElement("span");
+    num.textContent = (i + 1) + ".";
+    num.style.color = "var(--muted)";
+    var label = document.createElement("span");
+    label.textContent = ch.getAttribute("data-title");
+    var tick = document.createElement("span");
+    tick.className = "tick";
+    tick.textContent = "✓";
+    a.appendChild(num);
+    a.appendChild(label);
+    a.appendChild(tick);
+    if (read[ch.id]) a.classList.add("read");
+    li.appendChild(a);
+    toc.appendChild(li);
+  });
+  var links = Array.prototype.slice.call(toc.querySelectorAll("a"));
+
+  function saveRead() {
+    try { localStorage.setItem(READ_KEY, JSON.stringify(read)); } catch (e) {}
+  }
+  function updateProgress() {
+    var n = chapters.filter(function (c) { return read[c.id]; }).length;
+    progress.style.width = (100 * n / chapters.length) + "%";
+  }
+  function show(id, push) {
+    var idx = 0;
+    chapters.forEach(function (ch, i) {
+      var on = ch.id === id;
+      ch.classList.toggle("active", on);
+      if (on) idx = i;
+    });
+    links.forEach(function (a) {
+      a.classList.toggle("active", a.getAttribute("href") === "#" + id);
+    });
+    var ch = chapters[idx];
+    if (ch && !read[ch.id]) {
+      read[ch.id] = true; saveRead();
+      links[idx].classList.add("read");
+    }
+    updateProgress();
+    pageNum.textContent = "Chapter " + (idx + 1) + " of " + chapters.length;
+    if (push !== false && ("#" + id) !== location.hash) {
+      history.replaceState(null, "", "#" + id);
+    }
+    window.scrollTo(0, 0);
+    document.getElementById("prev-btn").disabled = idx === 0;
+    document.getElementById("next-btn").disabled = idx === chapters.length - 1;
+  }
+  function currentIndex() {
+    var id = location.hash.replace("#", "") || chapters[0].id;
+    for (var i = 0; i < chapters.length; i++) {
+      if (chapters[i].id === id) return i;
+    }
+    return 0;
+  }
+  document.getElementById("prev-btn").addEventListener("click", function () {
+    var i = Math.max(0, currentIndex() - 1);
+    show(chapters[i].id);
+  });
+  document.getElementById("next-btn").addEventListener("click", function () {
+    var i = Math.min(chapters.length - 1, currentIndex() + 1);
+    show(chapters[i].id);
+  });
+  window.addEventListener("hashchange", function () {
+    show(location.hash.replace("#", "") || chapters[0].id, false);
+  });
+
+  search.addEventListener("input", function () {
+    var q = search.value.toLowerCase();
+    Array.prototype.forEach.call(toc.children, function (li) {
+      var t = li.textContent.toLowerCase();
+      li.classList.toggle("hidden", q !== "" && t.indexOf(q) === -1);
+    });
+  });
+  search.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      var first = toc.querySelector("li:not(.hidden) a");
+      if (first) { location.hash = first.getAttribute("href"); }
+    }
+  });
+
+  var theme = document.getElementById("theme");
+  try {
+    var saved = localStorage.getItem("netmap-rs-book-theme");
+    if (saved) { document.documentElement.setAttribute("data-theme", saved); theme.value = saved; }
+  } catch (e) {}
+  theme.addEventListener("change", function () {
+    document.documentElement.setAttribute("data-theme", theme.value);
+    try { localStorage.setItem("netmap-rs-book-theme", theme.value); } catch (e) {}
+  });
+
+  document.querySelectorAll(".copy-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var el = document.getElementById(btn.getAttribute("data-copy"));
+      var text = el ? el.textContent : "";
+      function done() {
+        var old = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(function () { btn.textContent = old; }, 1500);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+      } else { fallback(); }
+      function fallback() {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+  });
+
+  document.querySelectorAll(".tab-bar button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var bar = btn.parentElement;
+      bar.querySelectorAll("button").forEach(function (b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      var root = bar.parentElement;
+      root.querySelectorAll(".tab-pane").forEach(function (p) { p.classList.remove("active"); });
+      root.querySelector("#" + btn.getAttribute("data-tab")).classList.add("active");
+    });
+  });
+
+  var feats = {
+    sys: document.getElementById("feat-sys"),
+    tokio: document.getElementById("feat-tokio"),
+    fallback: document.getElementById("feat-fallback")
+  };
+  var cargoOut = document.getElementById("cargo-out");
+  function renderCargo() {
+    var list = [];
+    if (feats.sys.checked) list.push('"sys"');
+    if (feats.tokio.checked) list.push('"tokio-async"');
+    if (feats.fallback.checked) list.push('"fallback"');
+    if (list.length === 0) list.push('"sys"');
+    cargoOut.textContent = '[dependencies]\nnetmap-rs = { version = "0.3", features = [' + list.join(", ") + "] }";
+  }
+  Object.keys(feats).forEach(function (k) { feats[k].addEventListener("change", renderCargo); });
+
+  var cmdTarget = document.getElementById("cmd-target");
+  var cmdFeatures = document.getElementById("cmd-features");
+  var cmdOut = document.getElementById("cmd-out");
+  document.getElementById("cmd-build").addEventListener("click", function () {
+    cmdOut.textContent = "$ cargo run --features " + cmdFeatures.value + " " + cmdTarget.value;
+  });
+
+  var N = 8, ring = { slots: [], head: 0, tail: 0, cur: 0, seq: 1 };
+  for (var s = 0; s < N; s++) ring.slots.push(null);
+  var slotsEl = document.getElementById("ring-slots");
+  var ringOut = document.getElementById("ring-out");
+  function renderRing(msg) {
+    slotsEl.innerHTML = "";
+    for (var i = 0; i < N; i++) {
+      var d = document.createElement("div");
+      d.className = "slot" + (ring.slots[i] !== null ? " full" : "");
+      var ptrs = [];
+      if (ring.head % N === i) ptrs.push("h");
+      if (ring.tail % N === i) ptrs.push("t");
+      if (ring.cur % N === i) ptrs.push("c");
+      d.innerHTML = "<span>" + (ring.slots[i] !== null ? "pkt" + ring.slots[i] : "·") + "</span>" +
+        '<span class="ptr">' + ptrs.join("") + "</span>";
+      d.title = "slot " + i;
+      slotsEl.appendChild(d);
+    }
+    var used = ring.slots.filter(function (x) { return x !== null; }).length;
+    ringOut.textContent = "head=" + ring.head + " tail=" + ring.tail + " cur=" + ring.cur +
+      " · " + used + "/" + (N - 1) + " usable slots occupied. " + (msg || "");
+  }
+  document.getElementById("ring-send").addEventListener("click", function () {
+    if (((ring.head + 1) % N) === (ring.tail % N)) {
+      renderRing("Ring full — send returns InsufficientSpace. Run sync first.");
+      return;
+    }
+    ring.slots[ring.head % N] = ring.seq++;
+    ring.head = (ring.head + 1) % 1000000;
+    ring.cur = ring.head;
+    renderRing("Packet queued; sync will hand it to the kernel.");
+  });
+  document.getElementById("ring-batch").addEventListener("click", function () {
+    var avail = (N - 1) - ring.slots.filter(function (x) { return x !== null; }).length;
+    if (avail < 3) { renderRing("reserve_batch(3) fails with InsufficientSpace (" + avail + " free)."); return; }
+    for (var k = 0; k < 3; k++) {
+      ring.slots[ring.head % N] = ring.seq++;
+      ring.head = (ring.head + 1) % 1000000;
+    }
+    ring.cur = ring.head;
+    renderRing("Batch of 3 reserved and committed with one head advance.");
+  });
+  document.getElementById("ring-sync").addEventListener("click", function () {
+    var drained = 0;
+    for (var k = 0; k < 2; k++) {
+      if (ring.tail % N !== ring.head % N || ring.slots[ring.tail % N] !== null) {
+        if (ring.slots[ring.tail % N] !== null) {
+          ring.slots[ring.tail % N] = null;
+          drained++;
         }
-        
-        // Add smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+        ring.tail = (ring.tail + 1) % 1000000;
+        if (drained >= 2) break;
+      }
+    }
+    renderRing(drained ? ("sync drained " + drained + " packet(s); slots are free again.") : "sync: nothing to drain.");
+  });
+  document.getElementById("ring-reset").addEventListener("click", function () {
+    ring.slots = []; for (var i = 0; i < N; i++) ring.slots.push(null);
+    ring.head = 0; ring.tail = 0; ring.cur = 0; ring.seq = 1;
+    renderRing("Ring reset.");
+  });
+  renderRing("h=head t=tail c=cur. The ring holds at most N−1 packets.");
+
+  var perfCheck = document.getElementById("perf-check");
+  var perfOut = document.getElementById("perf-out");
+  var PERF_KEY = "netmap-rs-book-perf";
+  var perf = {};
+  try { perf = JSON.parse(localStorage.getItem(PERF_KEY) || "{}"); } catch (e) { perf = {}; }
+  perfCheck.querySelectorAll("input").forEach(function (box) {
+    box.checked = !!perf[box.getAttribute("data-k")];
+    box.addEventListener("change", function () {
+      perf[box.getAttribute("data-k")] = box.checked;
+      try { localStorage.setItem(PERF_KEY, JSON.stringify(perf)); } catch (e) {}
+      renderPerf();
+    });
+  });
+  function renderPerf() {
+    var boxes = perfCheck.querySelectorAll("input");
+    var done = Array.prototype.filter.call(boxes, function (b) { return b.checked; }).length;
+    perfOut.textContent = done + " of " + boxes.length + " practices applied.";
+  }
+  renderPerf();
+
+  show(location.hash.replace("#", "") || chapters[0].id, false);
+  updateProgress();
+})();
+</script>
 </body>
 </html>
