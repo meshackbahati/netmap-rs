@@ -2,6 +2,8 @@
 
 `netmap-rs` provides safe, zero-cost abstractions for [Netmap](http://info.iet.unipi.it/~luigi/netmap/) kernel-bypass networking in Rust. It aims to offer high-performance packet I/O by leveraging Netmap's efficient memory-mapped ring buffers.
 
+**Full documentation:** <https://meshackbahati.github.io/netmap-rs/>
+
 ## Features
 
 *   **Zero-copy packet I/O:** Directly access packet buffers in memory shared with the kernel.
@@ -525,7 +527,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ```
 
 > **Tip:** For local, non-blocking experimentation you do not need a physical
-> NIC — netmap pipes (`pipe{name}` / `pipe}name`) and VALE ports
+> NIC: netmap pipes (`pipe{name}` / `pipe}name`) and VALE ports
 > (`vale0:port`) are virtual ports managed entirely in kernel memory.
 
 ## Testing without a physical NIC (the "virtual lab")
@@ -534,11 +536,11 @@ You do **not** need to touch any real network interface to try `netmap-rs`.
 Netmap provides two kinds of purely virtual, in-memory ports that never touch
 your physical adapters or the host network stack:
 
-* **VALE ports** (`vale0:port_name`) — an in-kernel Ethernet switch. Attach
+* **VALE ports** (`vale0:port_name`): ports on an in-kernel Ethernet switch. Attach
   two ports on the same switch and they can exchange frames like on a real
   switch. Note VALE enforces the Ethernet minimum frame size (14 bytes), so
   keep payloads at least 14 bytes long.
-* **Netmap pipes** (`pipe{name` / `pipe}name`) — a bidirectional byte channel
+* **Netmap pipes** (`pipe{name` / `pipe}name`): a bidirectional byte channel
   between two endpoints. Use the master endpoint in one process and the slave
   endpoint in another (or both in one process).
 
