@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://meshackbahati.github.io/netmap-rs/sitemap.xml
+Sitemap: https://netmap-rs.g24sec.com/sitemap.xml

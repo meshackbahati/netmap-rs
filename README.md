@@ -2,7 +2,7 @@
 
 `netmap-rs` provides safe, zero-cost abstractions for [Netmap](http://info.iet.unipi.it/~luigi/netmap/) kernel-bypass networking in Rust. It aims to offer high-performance packet I/O by leveraging Netmap's efficient memory-mapped ring buffers.
 
-**Full documentation:** <https://meshackbahati.github.io/netmap-rs/>
+**Full documentation:** <https://netmap-rs.g24sec.com/>
 
 ## Features
 
